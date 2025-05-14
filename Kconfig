@@ -1,0 +1,12 @@
+mainmenu "myIsar configuration"
+
+# this is a special variable telling kas what config to start
+config KAS_INCLUDE_MAIN
+    string
+    default "kas/isar.yaml"
+
+# this is a special variable telling kas to build for isar
+# it is duplicated in kas/isar.yaml
+config KAS_BUILD_SYSTEM
+    string
+    default "isar"

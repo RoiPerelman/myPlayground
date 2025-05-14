@@ -1,0 +1,43 @@
+# This software is a part of Isar.
+# Copyright (C) 2023-2024 ilbers GmbH
+
+header:
+  version: 16
+
+build_system: isar
+
+distro: debian-bookworm
+
+# this conf will look for conf/machine/my-qemuamd64.conf
+machine: my-qemuamd64
+# this conf will look for a my-isar-base bb file
+target: my-isar-base
+
+repos:
+  # downloads isar git repo to root of repo and add layers
+  isar:
+    url: https://github.com/ilbers/isar
+    tag: v0.11
+    commit: f8558fcf3ecf98e58853b82d89645bcedb24b853
+    layers:
+      meta:
+      meta-isar:
+      meta-test:
+
+  # add my-meta path that sits in the root of the repo to layers
+  my-meta:
+    path: my-meta
+
+bblayers_conf_header:
+  standard: |
+    BBPATH = "${TOPDIR}"
+    BBFILES ?= ""
+
+local_conf_header:
+  hostname: |
+    HOST_NAME = "my-debian-system"
+  user-root: |
+    USERS += "root"
+    USER_root[password] ??= "test123"
+    USER_root[flags] += "clear-text-password"
+

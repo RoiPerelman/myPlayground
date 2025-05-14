@@ -1,0 +1,7 @@
+# Ignore build directories
+build/
+isar/
+
+# Ignore local config files
+.config.yaml
+.config.yaml.old

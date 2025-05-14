@@ -1,1 +1,101 @@
-* myPlayground
+* myPlayground Isar
+
+** tools introduction
+
+- Isar (Integration System for Automated Root filesystem generation)
+ISAR is a framework for building custom embedded Linux systems using BitBake and
+Docker, streamlining the process by integrating APT packages directly into the
+build without needing custom BitBake recipes.
+
+- Kas
+Kas helps you build embedded Linux systems by wrapping BitBake and Docker
+together, so you don't have to install Yocto or Isar dependencies manually. It
+also helps manage BitBake with Kas YAML files, simplifying project setup and
+configuration
+
+- Bitbake
+BitBake is a build system used primarily in the Yocto Project and similar
+projects like ISAR. It automates the process of compiling software packages,
+creating system images, and managing dependencies. BitBake works by processing
+recipes, which define how to build specific software, handle patches, and
+configure build environments. It allows for the creation of highly customizable
+Linux distributions, particularly for embedded systems.
+
+- QEMU
+Qemu is a vm for easier testing of images
+
+** Kas
+
+
+*** tldr commands
+
+menu create a .config.yaml with configurations according to menu
+
+#+begin_src bash
+./kas/kas-container menu
+#+end_src
+
+build starts the bitbake command
+
+#+begin_src bash
+./kas/kas-container build
+#+end_src
+
+debug in shell using all env variables
+
+#+begin_export bash
+./kas/kas-container shell
+#+end_export
+
+*** must have files and
+
+- kas/isar.yaml
+this file is the entry point of kas configurations. the configurations put here
+can also be put in main layers conf/layer.conf. for example I put these in kas
+instead of conf/layers.conf
+  - build_system
+  - distro
+  - machine
+  - target
+  - repos (layers)
+- kas/kas-container
+a script downloaded from
+https://github.com/ilbers/isar/blob/master/kas/kas-container) this script is
+what lets us build inside a docker which includes prereqs instead of locally
+- Kconfig
+the whole point of kas. when u run kas-container it loads Kconfig in order to
+create a dynamic .config file
+
+** bitbake
+
+https://docs.yoctoproject.org/bitbake
+
+all of a the layers information is part of bitbake. in our case the information
+inside my-meta is all bitbake. If a file starts with my- we need to tell bitbake
+to take these files. in this case machine and core image is set in isar.yaml
+
+*** must have files
+
+- my-meta/conf/machine/my-qemuamd64.conf
+- my-meta/conf/layer.conf
+- my-meta/recipes-core/images/my-isar-base.bb
+
+** qemu
+
+run qemu with command
+
+#+begin_src bash
+qemu-system-x86_64 \
+    -machine q35 \
+    -m 1024 \
+    -smp 2 \
+    -drive if=pflash,format=raw,readonly=on,file=ovmf/OVMF_CODE.fd \
+    -drive if=pflash,format=raw,file=ovmf/OVMF_VARS.fd \
+    -kernel build/tmp/deploy/images/my-qemuamd64/my-isar-base-debian-bookworm-my-qemuamd64-vmlinuz \
+    -initrd build/tmp/deploy/images/my-qemuamd64/my-isar-base-debian-bookworm-my-qemuamd64-initrd.img \
+    -append "root=/dev/sda2 rootwait console=ttyS0,115200 console=tty0 rw" \
+    -drive file=build/tmp/deploy/images/my-qemuamd64/my-isar-base-debian-bookworm-my-qemuamd64.wic,format=raw \
+    -nographic \
+    -net nic,model=virtio \
+    -net user
+#+end_src
