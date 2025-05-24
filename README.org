@@ -1,1 +1,13 @@
-* myPlayground
+* Make A Lisp interpreter (mal)
+
+this is only my own implementation of mal
+
+** testing
+
+I test with mal's official test suite
+
+#+begin_src shell
+# clone mal and change runtest to use python3 instead of python
+git clone https://github.com/kanaka/mal.git
+rsync -av --delete ~/myPlayground/ ~/Other/mal/impls/rust/ && make "test^rust^step0"
+#+end_src
