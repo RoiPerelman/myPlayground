@@ -1,4 +1,5 @@
-use std::io::{self, Write};
+use rustyline::error::ReadlineError;
+use rustyline::{DefaultEditor, Result};
 
 fn READ(input: String) -> String {
     return input;
@@ -16,21 +17,30 @@ fn rep(input: String) -> String {
     return PRINT(EVAL(READ(input)));
 }
 
-fn
- main() {
+fn main() -> Result<()> {
+    let mut rl = DefaultEditor::new()?;
     loop {
-        let mut input = String::new();
-        print!("user> ");
-        io::stdout().flush().unwrap();
-        io::stdin().read_line(&mut input).unwrap();
-        let input = input.trim();
-
-        if input.is_empty() {
-            println!("Exiting REPL.");
-            break;
+        let readline = rl.readline("user> ");
+        match readline {
+            Ok(line) => {
+                rl.add_history_entry(line.as_str())?;
+                let line = line.trim();
+                println!("{}", rep(line.to_string()));
+            }
+            Err(ReadlineError::Interrupted) => {
+                println!("CTRL-C");
+                break;
+            }
+            Err(ReadlineError::Eof) => {
+                println!("CTRL-D");
+                break;
+            }
+            Err(err) => {
+                println!("Error: {:?}", err);
+                break;
+            }
         }
-
-
-        println!("{}", rep(input.to_string()));
     }
+    rl.save_history("history.txt").unwrap();
+    Ok(())
 }
