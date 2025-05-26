@@ -1,10 +1,11 @@
 [package]
-name = "myrust"
+name = "my_mal"
 version = "0.1.0"
 edition = "2024"
 
 [dependencies]
 rustyline = "13"
+regex = "1"
 
 [[bin]]
 name = "step0_repl"
