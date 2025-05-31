@@ -45,7 +45,11 @@ impl fmt::Display for Mal {
                     if !first {
                         write!(f, " ")?;
                     }
-                    write!(f, "{}: {}", key, value)?;
+                    if key.starts_with(':') {
+                        write!(f, "{} {}", key, value)?;
+                    } else {
+                        write!(f, "\"{}\" {}", key, value)?;
+                    }
                     first = false;
                 }
                 write!(f, "}}")
