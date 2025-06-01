@@ -67,6 +67,10 @@ pub fn read_form(reader: &mut Reader) -> Result<Mal, &'static str> {
                 let form = read_form(reader)?;
                 Ok(Mal::List(vec![Mal::Symbol("with-meta".to_string()), form]))
             }
+            "nil" => {
+                reader.next(); // consume 'nil'
+                Ok(Mal::Nil)
+            }
             _ if token.starts_with("\"") => read_string(reader),
             _ => read_atom(reader),
         },
