@@ -1,0 +1,92 @@
+[project]
+name = "rp_skeleton"
+version = "0.1.0"
+description = "RoiP skeleton python project"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.116.1",
+    "sqlalchemy>=2.0.43",
+    "uvicorn>=0.35.0",
+    "psycopg[binary]>=3.2.10",
+]
+
+[project.optional-dependencies]
+dev = [
+    "build>=1.3.0",
+    "pre-commit>=4.3.0",
+    "pyright>=1.1.405",
+    "pytest>=8.4.2",
+    "httpx>=0.27.2",
+    "ruff>=0.13.0",
+    "setuptools>=80.9.0",
+    "setuptools-scm[toml]>=9.2.0",
+    "tox>=4.30.2",
+    "pytest-cov>=7.0.0",
+]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 120
+extend-exclude = ["build", "dist"]
+
+[tool.ruff.lint]
+# Add the `line-too-long` rule to the enforced rule set.
+extend-select = [
+    "I",    # import sorting
+]
+
+ignore = [
+    "D", # ignore docstring rules
+    # remove conflicting rules with formatter
+    # https://docs.astral.sh/ruff/formatter/#conflicting-lint-rules
+    "W191",
+    "E111",
+    "E114",
+    "E117",
+    "D206",
+    "D300",
+    "Q000",
+    "Q001",
+    "Q002",
+    "Q003",
+    "COM812",
+    "COM819",
+    "ISC001",
+    "ISC002",
+]
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+force-sort-within-sections = true
+known-first-party = ["rp_skeleton"]
+lines-after-imports = 2
+
+
+[tool.pyright]
+pythonVersion = "3.11"
+typeCheckingMode = "strict"
+exclude = ["build", "dist", ".venv", ".tox"]
+venvPath = "."
+venv = ".venv"
+
+[tool.setuptools]
+packages = ["rp_skeleton"]
+
+[tool.coverage.run]
+omit = [
+    "rp_skeleton/sql_test.py",
+    "tests/*",
+    ".tox/*",
+    ".venv/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if __name__ == .__main__.:",
+    "raise AssertionError",
+    "raise NotImplementedError",
+]
+

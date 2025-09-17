@@ -1,0 +1,35 @@
+repos:
+  - repo: local
+    hooks:
+      - id: format
+        name: Format code with ruff
+        entry: uv run tox -e format
+        language: system
+        types: [python]
+        pass_filenames: false
+        stages: [pre-commit]
+      
+      - id: lint
+        name: Lint code with ruff
+        entry: uv run tox -e lint
+        language: system
+        types: [python]
+        pass_filenames: false
+        stages: [pre-commit]
+      
+      - id: type-check
+        name: Type check with pyright
+        entry: uv run tox -e type
+        language: system
+        types: [python]
+        pass_filenames: false
+        stages: [pre-commit]
+      
+      - id: tests
+        name: Run tests
+        entry: uv run tox -e tests
+        language: system
+        types: [python]
+        pass_filenames: false
+        stages: [pre-commit]
+

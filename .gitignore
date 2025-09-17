@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# Environments
+.venv/
+.env
+
+# Packaging / build artifacts
+build/
+dist/
+*.egg-info/
+
+# IDE
+.idea/
+.vscode/
+
+# Ruff / pyright caches
+.pyright/
+.ruff_cache/
+
+# Coverage
+htmlcov/
+.coverage*

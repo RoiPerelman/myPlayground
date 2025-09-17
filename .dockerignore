@@ -1,0 +1,32 @@
+# Ignore local artifacts and caches
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# Python virtual envs
+.venv/
+.env
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Git
+.git
+.gitignore
+
+# IDE/editor
+.vscode/
+.idea/
+
+# Ruff / Pyright / pytest caches
+.pyright/
+.ruff_cache/
+.pytest_cache/
+
+# Coverage
+htmlcov/
+.coverage*
